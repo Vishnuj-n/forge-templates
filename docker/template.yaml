@@ -1,0 +1,12 @@
+
+name: docker-basic
+description: Basic Docker template that provides a starter Dockerfile and ignores.
+version: 0.1.0
+files:
+  copy:
+    - files/Dockerfile
+    - files/.dockerignore
+    - files/README.md
+
+commands:
+  - cmd: ["docker", "--version"]

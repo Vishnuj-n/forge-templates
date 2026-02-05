@@ -1,0 +1,12 @@
+# Common dockerignore entries
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+env/
+build/
+dist/
+node_modules/
+.git
+*.log
