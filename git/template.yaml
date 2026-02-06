@@ -1,4 +1,6 @@
 name: git
+description: "Basic Git repository template with README and standard .gitignore setup"
+version: 0.1.0
 commands:
   - cmd: ["git", "init"]
 files:

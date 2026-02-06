@@ -31,7 +31,11 @@ Forge templates are reusable project blueprints. Each template can:
 Templates allow developers to quickly bootstrap projects with consistent setup and configuration.
 
 ---
+# Forge Template Guide (Short)
 
+Templates must include `template.yaml` with `name`. Optionally add a one-line `description` and `version: 0.1.0`. Use token-array `cmd` entries (no shell strings), `files.copy` to add files, and `files.append` to patch existing files. Test with `forge test <template>`.
+
+---
 ## Repository Structure
 
 ```

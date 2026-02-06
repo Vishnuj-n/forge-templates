@@ -1,5 +1,7 @@
 name: uv
+description: "Basic uv Python project template that initializes a project, copies a .env file, and extends .gitignore
 
+version: 0.1.0
 # Commands to execute in order
 # Each command is executed in the temporary workspace
 commands:

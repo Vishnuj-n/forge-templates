@@ -1,0 +1,16 @@
+name: npm
+description: Basic npm/Node.js template with `package.json` and a starter `index.js`.
+version: 0.1.0
+files:
+  copy:
+    - files/index.js
+    - files/.gitignore
+    - files/README.md
+  append:
+    - target: ".gitignore"
+      source: "patches/gitignore.append"
+
+commands:
+  - cmd: ["node", "--version"]
+  - cmd: ["npm", "--version"]
+  - cmd: ["git", "init"]

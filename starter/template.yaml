@@ -5,6 +5,8 @@
 # Edit the commands and files sections below to customize.
 
 name: example
+description: "Short description for example"
+version: 0.1.0
 
 # Commands to execute in order
 # Each command is executed in the temporary workspace
