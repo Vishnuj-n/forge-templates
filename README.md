@@ -1,41 +1,57 @@
 # Forge Templates
 
-Official template collection for **Forge CLI**. These templates are used to scaffold new projects with predefined structure, commands, and safe file modifications.
+Official template collection for the Forge CLI. Templates scaffold new projects with predefined structure, commands, and safe file modifications.
 
 ---
 
 ## Table of Contents
 
-1. [Overview](#overview)
-2. [Repository Structure](#repository-structure)
-3. [Using Templates](#using-templates)
-4. [Template Resolution Order](#template-resolution-order)
-5. [Editing Templates](#editing-templates)
-6. [Creating New Templates](#creating-new-templates)
-7. [Contributing Templates](#contributing-templates)
-8. [Versioning](#versioning)
-9. [Learn More](#learn-more)
-10. [License](#license)
+1. Overview
+2. Repository Structure
+3. Using Templates
+4. Template Resolution Order
+5. Editing Templates
+6. Creating New Templates
+7. Contributing Templates
+8. Versioning
+9. Learn More
+10. License
 
 ---
 
 ## Overview
 
 Forge templates are reusable project blueprints. Each template can:
+- Run initialization commands (e.g., `git init`)
+- Copy predefined files into new projects
+- Apply append-only patches to existing files
+- Provide documentation and setup guidance
 
-* Run initialization commands (e.g., `git init`)
-* Copy predefined files into new projects
-* Append safe patches to existing files
-* Provide documentation and setup guidance
-
-Templates allow developers to quickly bootstrap projects with consistent setup and configuration.
-
----
-# Forge Template Guide (Short)
-
-Templates must include `template.yaml` with `name`. Optionally add a one-line `description` and `version: 0.1.0`. Use token-array `cmd` entries (no shell strings), `files.copy` to add files, and `files.append` to patch existing files. Test with `forge test <template>`.
+Templates let developers quickly bootstrap projects with consistent setup and configuration.
 
 ---
+
+## Quick Guide
+
+- Templates must include a `template.yaml` with at least a `name` field.
+- Optional fields: `description`, `version` (e.g., `0.1.0`).
+- Use token-array `cmd` entries (array of strings; do not use a shell string).
+- Use `files.copy` to add files, and `files.append` to patch existing files.
+- Test templates locally with: `forge test <template-path-or-name>`.
+
+Interactive example:
+
+```yaml
+commands:
+   - cmd: ["npm", "init"]
+      interactive: true
+      test_cmd: ["npm", "init", "-y"]
+```
+
+- `interactive: true` marks a command that prompts the user; `test_cmd` provides a non-interactive substitute used by `forge test`.
+
+---
+
 ## Repository Structure
 
 ```
@@ -47,164 +63,129 @@ templates/
  │   └── patches/
 ```
 
-### template.yaml
-
-Defines template behavior including commands and file operations.
-
-### files/
-
-Contains files and directories copied into generated projects.
-
-### patches/
-
-Contains append-only patches applied to existing project files.
-
-### README.md
-
-Explains the purpose and usage of the template.
+- `template.yaml`: Defines template behavior (commands, file ops).
+- `files/`: Files and directories copied into generated projects.
+- `patches/`: Append-only patches applied to existing project files.
+- `README.md`: Usage and purpose for the template.
 
 ---
 
 ## Using Templates
 
-Templates in this repository are used with the Forge CLI.
-
-### Pull a Template
+Pull a template (from remote templates repo) with:
 
 ```
 forge pull <template-name>
 ```
 
-### Create a Project
+Create a new project from a template:
 
 ```
 forge init <template-name> <project-directory>
 ```
 
-### List Installed Templates
+List installed templates:
 
 ```
 forge list
 ```
 
+Test a template locally (recommended after edits):
+
+```
+forge test <template-path-or-name>
+```
+
+(You can pass a path like `templates/<template-name>` or an installed template name.)
+
 ---
 
 ## Template Resolution Order
 
-When running commands like `forge init` or `forge list`, Forge searches for templates in the following order:
+When locating templates, Forge searches in this order (first match wins):
 
-### 1. Project-local Templates
-
-```
-./templates/<template-name>
-```
-
-Templates stored inside the current project directory.
-
----
-
-### 2. Environment Variable Templates
-
-```
-$FORGE_TEMPLATES/<template-name>
-```
-
-If the `FORGE_TEMPLATES` environment variable is set, Forge searches this directory.
-
----
-
-### 3. Global Templates
-
-```
-%USERPROFILE%\.forge\templates\<template-name>
-```
-
-Default global template storage.
-
----
-
-Forge uses the **first matching template** found. This allows project-specific overrides and shared template directories.
+1. Project-local templates
+   - `./templates/<template-name>`
+2. Environment variable directory
+   - `$FORGE_TEMPLATES/<template-name>`  (on Windows PowerShell use `%USERPROFILE%\.forge\templates` or set `FORGE_TEMPLATES` accordingly)
+3. Global templates
+   - `%USERPROFILE%\.forge\templates` on Windows
+   - `$HOME/.forge/templates` on Unix-like systems
 
 ---
 
 ## Editing Templates
 
-You can edit installed templates locally.
-
-### Step 1 — Navigate to Template Directory
-
-Global templates are stored at:
-
-```
-%USERPROFILE%\.forge\templates
-```
-
-Open Command Prompt or PowerShell and run:
-
-```
-cd %USERPROFILE%\.forge\templates\<template-name>
-```
-
----
-
-### Step 2 — Open Template in VS Code
-
-If Visual Studio Code is installed:
-
-```
-code .
-```
-
----
-
-### Step 3 — Modify Template Files
-
-You can edit:
-
-* `template.yaml` → Template behavior
-* `files/` → Files copied into projects
-* `patches/` → Append-only patches
-
----
-
-### Step 4 — Test Template Changes
-
-```
-forge test <template-name>
-```
+1. Navigate to the template directory:
+   - Windows PowerShell:
+     ```
+     cd $env:USERPROFILE\.forge\templates\<template-name>
+     ```
+   - Unix/macOS:
+     ```
+     cd ~/.forge/templates/<template-name>
+     ```
+2. Open in editor:
+   ```
+   code .
+   ```
+3. Modify `template.yaml`, `files/`, and `patches/`.
+4. Test changes:
+   ```
+   forge test <template-path-or-name>
+   ```
 
 ---
 
 ## Creating New Templates
 
-You can scaffold new templates using Forge:
+Scaffold a new template:
 
 ```
 forge new <template-name>
 ```
 
-After creation, edit:
+Then edit:
+- `template.yaml` to define commands and file operations
+- `files/` to include project files
+- `patches/` to define append patches
 
-* `template.yaml` to define commands and file operations
-* `files/` to include project files
-* `patches/` to define append patches
+Example `template.yaml` (minimal):
+
+```yaml
+name: example-template
+description: "A minimal example template"
+version: "0.1.0"
+
+cmd:
+  - ["git", "init"]
+  - ["go", "mod", "init", "example.com/myproject"]
+
+files:
+  copy:
+    - src/main.go: files/main.go
+
+files:
+  append:
+    - README.md: patches/README_add.txt
+```
+
+Notes:
+- `cmd` entries are arrays of tokens: `["git","init"]` (not a shell string).
+- `files.copy` maps destination to a source path inside the template.
+- `files.append` maps destination to a patch file that will be appended.
 
 ---
 
 ## Contributing Templates
 
-Contributions are welcome.
+Guidelines:
+- Keep templates deterministic and reproducible.
+- Avoid destructive commands (do not delete user files).
+- Include clear documentation in the template `README.md`.
+- Ensure templates pass local testing (`forge test`).
 
-### Guidelines
-
-* Keep templates deterministic and reproducible
-* Avoid destructive commands
-* Include clear documentation in template README files
-* Ensure templates pass testing
-
----
-
-### Testing Templates
+Testing locally:
 
 ```
 forge test templates/<template-name>
@@ -214,21 +195,19 @@ forge test templates/<template-name>
 
 ## Versioning
 
-Templates evolve independently from the Forge CLI. Pull templates regularly to receive updates and improvements.
+Templates are versioned independently from the Forge CLI. Pull templates regularly to receive updates.
 
 ---
 
 ## Learn More
 
 See the main Forge CLI repository for:
-
-* Full CLI documentation
-* Template engine details
-* Advanced configuration
-* Usage examples
+- Full CLI documentation
+- Template engine details
+- Advanced configuration and examples
 
 ---
 
 ## License
 
-Templates follow the same license as the Forge project unless stated otherwise.
+Templates use the same license as the Forge project unless otherwise stated.

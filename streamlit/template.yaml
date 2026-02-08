@@ -1,0 +1,17 @@
+name: streamlit
+
+description: Streamlit web application template for building interactive data apps
+
+version: 0.1.0
+
+commands:
+  - cmd: ["python", "--version"]
+  - cmd: ["git", "init"]
+files:
+  copy:
+    - files/README.md
+    - files/.gitignore
+    - files/app.py
+    - files/requirements.txt
+    - files/.streamlit/config.toml
+    - files/.streamlit/secrets.toml.example
