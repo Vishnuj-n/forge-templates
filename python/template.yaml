@@ -1,16 +1,14 @@
 name: python
-
 description: Python project template with virtual environment setup
-
 version: 0.1.0
 
 commands:
-  - cmd: ["python", "--version"]
   - cmd: ["git", "init"]
+  - cmd: ["python", "-m", "venv", ".venv"]
+  - cmd: [".venv\\Scripts\\activate"]
 
 files:
   copy:
     - files/README.md
     - files/.gitignore
     - files/main.py
-
